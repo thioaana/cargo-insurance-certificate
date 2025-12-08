@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { LogoutButton } from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -13,6 +14,52 @@ interface NavBarClientProps {
 
 export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  // Close menu on route change
+  useEffect(() => {
+    // eslint-disable-next-line
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Close menu on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
+
+  // Focus trap for mobile menu
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!isOpen || e.key !== "Tab") return;
+
+      const focusableElements = mobileMenuRef.current?.querySelectorAll<HTMLElement>(
+        'a, button, [tabindex]:not([tabindex="-1"])'
+      );
+
+      if (!focusableElements || focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    },
+    [isOpen]
+  );
 
   return (
     <nav className="bg-primary text-primary-foreground px-4 py-3">
@@ -41,9 +88,9 @@ export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
           {isLoggedIn ? (
             <LogoutButton />
           ) : (
-            <Link href="/auth/login">
-              <Button variant="secondary">Login</Button>
-            </Link>
+            <Button variant="secondary" asChild>
+              <Link href="/auth/login">Login</Link>
+            </Button>
           )}
         </div>
 
@@ -51,9 +98,11 @@ export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
         <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle />
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle navigation"
+            aria-expanded={isOpen}
             className="p-2 rounded-md hover:bg-primary-foreground/10 transition-colors duration-200"
           >
             <svg
@@ -84,8 +133,10 @@ export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
 
       {/* Mobile Navigation */}
       <div
+        ref={mobileMenuRef}
+        onKeyDown={handleKeyDown}
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? "max-h-64 opacity-100 mt-4" : "max-h-0 opacity-0"
+          isOpen ? "max-h-64 opacity-100 mt-4" : "max-h-0 opacity-0 invisible"
         }`}
       >
         <div className="flex flex-col gap-3 pb-2">
@@ -107,11 +158,11 @@ export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
             {isLoggedIn ? (
               <LogoutButton />
             ) : (
-              <Link href="/auth/login" onClick={() => setIsOpen(false)}>
-                <Button variant="secondary" className="w-full">
+              <Button variant="secondary" className="w-full" asChild>
+                <Link href="/auth/login" onClick={() => setIsOpen(false)}>
                   Login
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             )}
           </div>
         </div>

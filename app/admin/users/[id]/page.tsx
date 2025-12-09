@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getProfile } from '@/lib/services/profiles';
+import { getProfile, getCurrentProfile } from '@/lib/services/profiles';
 import EditUserForm from './edit-user-form';
 
 interface PageProps {
@@ -8,6 +8,12 @@ interface PageProps {
 }
 
 export default async function EditUserPage({ params }: PageProps) {
+  // Defense-in-depth: verify admin role in page component
+  const currentProfile = await getCurrentProfile();
+  if (!currentProfile || currentProfile.role !== 'admin') {
+    notFound();
+  }
+
   const { id } = await params;
   const profile = await getProfile(id);
 

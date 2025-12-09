@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 // Routes that require admin role
-const ADMIN_ROUTES = ["/admin"];
+const ADMIN_ROUTES = ["/admin", "/contracts"];
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({

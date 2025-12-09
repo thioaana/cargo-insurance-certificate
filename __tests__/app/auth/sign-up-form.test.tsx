@@ -172,8 +172,8 @@ describe("SignUpForm component", () => {
 
       await user.type(screen.getByLabelText("Full name"), "John Doe");
       await user.type(screen.getByLabelText("Email"), "test@example.com");
-      await user.type(screen.getByLabelText("Password"), "password123");
-      await user.type(screen.getByLabelText("Repeat Password"), "differentpassword");
+      await user.type(screen.getByLabelText("Password"), "Password123");
+      await user.type(screen.getByLabelText("Repeat Password"), "Password456");
       await user.click(screen.getByRole("button", { name: "Sign up" }));
 
       await waitFor(() => {
@@ -201,8 +201,8 @@ describe("SignUpForm component", () => {
 
       await user.type(screen.getByLabelText("Full name"), "John Doe");
       await user.type(screen.getByLabelText("Email"), "test@example.com");
-      await user.type(screen.getByLabelText("Password"), "password123");
-      await user.type(screen.getByLabelText("Repeat Password"), "password123");
+      await user.type(screen.getByLabelText("Password"), "Password123");
+      await user.type(screen.getByLabelText("Repeat Password"), "Password123");
       await user.click(screen.getByRole("button", { name: "Sign up" }));
 
       await waitFor(() => {
@@ -230,14 +230,14 @@ describe("SignUpForm component", () => {
 
       await user.type(screen.getByLabelText("Full name"), "John Doe");
       await user.type(screen.getByLabelText("Email"), "test@example.com");
-      await user.type(screen.getByLabelText("Password"), "password123");
-      await user.type(screen.getByLabelText("Repeat Password"), "password123");
+      await user.type(screen.getByLabelText("Password"), "Password123");
+      await user.type(screen.getByLabelText("Repeat Password"), "Password123");
       await user.click(screen.getByRole("button", { name: "Sign up" }));
 
       await waitFor(() => {
         expect(mockSignUp).toHaveBeenCalledWith({
           email: "test@example.com",
-          password: "password123",
+          password: "Password123",
           options: {
             data: { full_name: "John Doe" },
             emailRedirectTo: "http://localhost:3000/dashboard",
@@ -269,8 +269,8 @@ describe("SignUpForm component", () => {
 
       await user.type(screen.getByLabelText("Full name"), "John Doe");
       await user.type(screen.getByLabelText("Email"), "test@example.com");
-      await user.type(screen.getByLabelText("Password"), "password123");
-      await user.type(screen.getByLabelText("Repeat Password"), "password123");
+      await user.type(screen.getByLabelText("Password"), "Password123");
+      await user.type(screen.getByLabelText("Repeat Password"), "Password123");
       await user.click(screen.getByRole("button", { name: "Sign up" }));
 
       // Check loading state
@@ -312,8 +312,8 @@ describe("SignUpForm component", () => {
 
       await user.type(screen.getByLabelText("Full name"), "John Doe");
       await user.type(screen.getByLabelText("Email"), "existing@example.com");
-      await user.type(screen.getByLabelText("Password"), "password123");
-      await user.type(screen.getByLabelText("Repeat Password"), "password123");
+      await user.type(screen.getByLabelText("Password"), "Password123");
+      await user.type(screen.getByLabelText("Repeat Password"), "Password123");
       await user.click(screen.getByRole("button", { name: "Sign up" }));
 
       await waitFor(() => {
@@ -349,8 +349,8 @@ describe("SignUpForm component", () => {
       // First submission - will fail
       await user.type(screen.getByLabelText("Full name"), "John Doe");
       await user.type(screen.getByLabelText("Email"), "test@example.com");
-      await user.type(screen.getByLabelText("Password"), "password123");
-      await user.type(screen.getByLabelText("Repeat Password"), "password123");
+      await user.type(screen.getByLabelText("Password"), "Password123");
+      await user.type(screen.getByLabelText("Repeat Password"), "Password123");
       await user.click(screen.getByRole("button", { name: "Sign up" }));
 
       // Wait for error to appear

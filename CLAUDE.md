@@ -104,9 +104,9 @@ A web application for managing cargo insurance certificates. Brokers create cert
 - Optionally, include notes on limitations or next steps for the module.
 
 ### Current Work
-- **Module:** User Roles & Profile
-- **Branch:** feature/user-roles
-- **Status:** implemented (ready for review)
+- **Module:** Contracts CRUD (Module 4 completed)
+- **Branch:** `feature/navbar`
+- **Status:** Ready to merge, then start Module 5
 
 ## Module Roadmap
 
@@ -120,7 +120,7 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Profile page
    - Files: `app/auth/*`, `lib/supabase/*`, `components/logout-button.tsx`, `middleware.ts`
 
-2. [x] **User Roles & Profile** (`feature/user-roles`) - IN REVIEW
+2. [x] **User Roles & Profile** (`feature/user-roles`) - MERGED
    - Added `profiles` table with role and broker_code (via Supabase SQL)
    - Database trigger auto-creates profile on sign-up
    - Profile page shows role, broker_code, and editable full_name
@@ -128,21 +128,23 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Admin user management at `/admin/users`
    - Files: `lib/types/profile.ts`, `lib/services/profiles.ts`, `lib/services/auth.ts`, `app/auth/profile/*`, `app/admin/users/*`, `app/unauthorized/*`
 
-### Upcoming Modules
-
-3. [ ] **NavBar Update** (`feature/navbar`)
+3. [x] **NavBar Update** (`feature/navbar`) - MERGED
    - Dynamic navigation based on role
-   - Admin sees: Contracts, All Certificates
-   - Broker sees: My Certificates
-   - Common: Profile, Logout
+   - Admin sees: Contracts, All Certificates links
+   - Broker sees: My Certificates link
+   - User dropdown menu with Profile and Logout
+   - Updated mobile menu with role-based links
+   - Files: `components/NavBar.tsx`, `components/NavBarClient.tsx`, `__tests__/components/NavBarClient.test.tsx`
 
-4. [ ] **Contracts CRUD** (`feature/contracts`)
-   - Admin-only access
-   - List all contracts
-   - Create contract (assign broker_code)
+4. [x] **Contracts CRUD** (`feature/navbar`) - COMPLETE
+   - Admin-only access (middleware + page-level checks)
+   - List all contracts with table view
+   - Create contract with broker dropdown selection
    - Edit contract
-   - Delete contract
-   - Files: `app/contracts/*`
+   - Delete contract with confirmation
+   - Files: `lib/types/contract.ts`, `lib/services/contracts.ts`, `app/contracts/*`, `__tests__/app/contracts/*`, `__tests__/lib/services/contracts.test.ts`
+
+### Upcoming Modules
 
 5. [ ] **Certificates CRUD** (`feature/certificates`)
    - Broker: create/edit/delete own certificates

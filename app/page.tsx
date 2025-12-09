@@ -10,7 +10,7 @@ export default function Home() {
         {/* Hero Section */}
         <header className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Welcome to Agro Proposal
+            Welcome to Cargo Insurance Certificate
           </h1>
           <p className="text-lg text-muted-foreground mb-6">
             A powerful Next.js application with Supabase integration

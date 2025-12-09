@@ -104,9 +104,9 @@ A web application for managing cargo insurance certificates. Brokers create cert
 - Optionally, include notes on limitations or next steps for the module.
 
 ### Current Work
-- **Module:** None (between modules)
-- **Branch:** main
-- **Status:** ready-for-next-module
+- **Module:** User Roles & Profile
+- **Branch:** feature/user-roles
+- **Status:** implemented (ready for review)
 
 ## Module Roadmap
 
@@ -120,13 +120,15 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Profile page
    - Files: `app/auth/*`, `lib/supabase/*`, `components/logout-button.tsx`, `middleware.ts`
 
+2. [x] **User Roles & Profile** (`feature/user-roles`) - IN REVIEW
+   - Added `profiles` table with role and broker_code (via Supabase SQL)
+   - Database trigger auto-creates profile on sign-up
+   - Profile page shows role, broker_code, and editable full_name
+   - Role-based route protection in middleware (`/admin/*` routes)
+   - Admin user management at `/admin/users`
+   - Files: `lib/types/profile.ts`, `lib/services/profiles.ts`, `lib/services/auth.ts`, `app/auth/profile/*`, `app/admin/users/*`, `app/unauthorized/*`
+
 ### Upcoming Modules
-2. [ ] **User Roles & Profile** (`feature/user-roles`)
-   - Add `profiles` table with role and broker_code
-   - Update sign-up to create profile
-   - Update profile page to show role and broker_code
-   - Create role-based route protection middleware
-   - Admin can manage user roles
 
 3. [ ] **NavBar Update** (`feature/navbar`)
    - Dynamic navigation based on role

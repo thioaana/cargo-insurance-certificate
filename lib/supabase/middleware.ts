@@ -1,6 +1,9 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+// Routes that require admin role
+const ADMIN_ROUTES = ["/admin"];
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -40,16 +43,39 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
+  const pathname = request.nextUrl.pathname;
+
+  // Check if user is authenticated for protected routes
   if (
-    request.nextUrl.pathname !== "/" &&
+    pathname !== "/" &&
     !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
+    !pathname.startsWith("/login") &&
+    !pathname.startsWith("/auth") &&
+    !pathname.startsWith("/unauthorized")
   ) {
-    // no user, potentially respond by redirecting the user to the login page
+    // no user, redirect to login
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);
+  }
+
+  // Check admin routes - only query profile if accessing admin routes
+  const isAdminRoute = ADMIN_ROUTES.some((route) => pathname.startsWith(route));
+
+  if (isAdminRoute && user) {
+    // Fetch user's role from profiles table
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.sub)
+      .single();
+
+    if (!profile || profile.role !== "admin") {
+      // Not an admin, redirect to unauthorized
+      const url = request.nextUrl.clone();
+      url.pathname = "/unauthorized";
+      return NextResponse.redirect(url);
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

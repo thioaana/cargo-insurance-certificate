@@ -104,9 +104,9 @@ A web application for managing cargo insurance certificates. Brokers create cert
 - Optionally, include notes on limitations or next steps for the module.
 
 ### Current Work
-- **Module:** None (Module 3 completed, ready for Module 4)
-- **Branch:** -
-- **Status:** Ready to start next module
+- **Module:** Contracts CRUD (Module 4 completed)
+- **Branch:** `feature/navbar`
+- **Status:** Ready to merge, then start Module 5
 
 ## Module Roadmap
 
@@ -136,15 +136,15 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Updated mobile menu with role-based links
    - Files: `components/NavBar.tsx`, `components/NavBarClient.tsx`, `__tests__/components/NavBarClient.test.tsx`
 
-### Upcoming Modules
-
-4. [ ] **Contracts CRUD** (`feature/contracts`)
-   - Admin-only access
-   - List all contracts
-   - Create contract (assign broker_code)
+4. [x] **Contracts CRUD** (`feature/navbar`) - COMPLETE
+   - Admin-only access (middleware + page-level checks)
+   - List all contracts with table view
+   - Create contract with broker dropdown selection
    - Edit contract
-   - Delete contract
-   - Files: `app/contracts/*`
+   - Delete contract with confirmation
+   - Files: `lib/types/contract.ts`, `lib/services/contracts.ts`, `app/contracts/*`, `__tests__/app/contracts/*`, `__tests__/lib/services/contracts.test.ts`
+
+### Upcoming Modules
 
 5. [ ] **Certificates CRUD** (`feature/certificates`)
    - Broker: create/edit/delete own certificates

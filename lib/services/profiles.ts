@@ -122,3 +122,38 @@ export async function updateUserRole(
 
   return data as Profile;
 }
+
+/**
+ * Broker info for dropdown selection
+ */
+export interface BrokerInfo {
+  id: string;
+  broker_code: string;
+  full_name: string | null;
+}
+
+/**
+ * Get all brokers for dropdown selection (admin only)
+ */
+export async function getAllBrokers(): Promise<BrokerInfo[]> {
+  const supabase = await createClient();
+
+  // Verify the caller is an admin
+  const currentProfile = await getCurrentProfile();
+  if (!currentProfile || currentProfile.role !== 'admin') {
+    throw new Error('Unauthorized: Admin access required');
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, broker_code, full_name')
+    .eq('role', 'broker')
+    .not('broker_code', 'is', null)
+    .order('broker_code', { ascending: true });
+
+  if (error) {
+    throw new Error('Failed to fetch brokers');
+  }
+
+  return data as BrokerInfo[];
+}

@@ -1,16 +1,15 @@
-import { createClient } from "@/lib/supabase/server";
 import { NavBarClient } from "@/components/NavBarClient";
+import { getCurrentProfile } from "@/lib/services/profiles";
+import type { Profile } from "@/lib/types/profile";
 
 export async function NavBar() {
-  let isLoggedIn = false;
+  let profile: Profile | null = null;
 
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    isLoggedIn = !!user;
+    profile = await getCurrentProfile();
   } catch {
     // Auth check failed, user remains logged out
   }
 
-  return <NavBarClient isLoggedIn={isLoggedIn} />;
+  return <NavBarClient profile={profile} />;
 }

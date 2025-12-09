@@ -1,8 +1,16 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { getCurrentProfile } from '@/lib/services/profiles';
 import type { Profile } from '@/lib/types/profile';
 
 export default async function AdminUsersPage() {
+  // Defense-in-depth: verify admin role in page component
+  const currentProfile = await getCurrentProfile();
+  if (!currentProfile || currentProfile.role !== 'admin') {
+    notFound();
+  }
+
   const supabase = await createClient();
 
   // Fetch all profiles

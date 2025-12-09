@@ -51,7 +51,6 @@ export function SignUpForm({
         },
       });
       if (error) throw error;
-      // router.push("/auth/sign-up-success"); // Redirect on successful sign-up
       router.push("/auth/login");
     } catch {
       setError("Unable to create account. Please try again.");

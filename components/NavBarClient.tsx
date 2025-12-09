@@ -4,15 +4,26 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
+import { User } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import type { Profile } from "@/lib/types/profile";
 
 interface NavBarClientProps {
-  isLoggedIn: boolean;
+  profile: Profile | null;
 }
 
-export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
+export function NavBarClient({ profile }: NavBarClientProps) {
+  const isLoggedIn = !!profile;
+  const isAdmin = profile?.role === "admin";
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -72,21 +83,51 @@ export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          <Link
-            href="/new-proposal"
-            className="hover:text-accent transition-colors duration-200"
-          >
-            New Proposal
-          </Link>
-          <Link
-            href="/dashboard"
-            className="hover:text-accent transition-colors duration-200"
-          >
-            Dashboard
-          </Link>
+          {isLoggedIn && (
+            <>
+              {isAdmin ? (
+                <>
+                  <Link
+                    href="/contracts"
+                    className="hover:text-accent transition-colors duration-200"
+                  >
+                    Contracts
+                  </Link>
+                  <Link
+                    href="/certificates"
+                    className="hover:text-accent transition-colors duration-200"
+                  >
+                    All Certificates
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  href="/certificates"
+                  className="hover:text-accent transition-colors duration-200"
+                >
+                  My Certificates
+                </Link>
+              )}
+            </>
+          )}
           <ThemeToggle />
           {isLoggedIn ? (
-            <LogoutButton />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" aria-label="User menu">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href="/auth/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <LogoutButton />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Button variant="secondary" asChild>
               <Link href="/auth/login">Login</Link>
@@ -136,24 +177,47 @@ export function NavBarClient({ isLoggedIn }: NavBarClientProps) {
         ref={mobileMenuRef}
         onKeyDown={handleKeyDown}
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? "max-h-64 opacity-100 mt-4" : "max-h-0 opacity-0 invisible"
+          isOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0 invisible"
         }`}
       >
         <div className="flex flex-col gap-3 pb-2">
-          <Link
-            href="/new-proposal"
-            className="px-2 py-2 rounded-md hover:bg-primary-foreground/10 transition-colors duration-200"
-            onClick={() => setIsOpen(false)}
-          >
-            New Proposal
-          </Link>
-          <Link
-            href="/dashboard"
-            className="px-2 py-2 rounded-md hover:bg-primary-foreground/10 transition-colors duration-200"
-            onClick={() => setIsOpen(false)}
-          >
-            Dashboard
-          </Link>
+          {isLoggedIn && (
+            <>
+              {isAdmin ? (
+                <>
+                  <Link
+                    href="/contracts"
+                    className="px-2 py-2 rounded-md hover:bg-primary-foreground/10 transition-colors duration-200"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Contracts
+                  </Link>
+                  <Link
+                    href="/certificates"
+                    className="px-2 py-2 rounded-md hover:bg-primary-foreground/10 transition-colors duration-200"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    All Certificates
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  href="/certificates"
+                  className="px-2 py-2 rounded-md hover:bg-primary-foreground/10 transition-colors duration-200"
+                  onClick={() => setIsOpen(false)}
+                >
+                  My Certificates
+                </Link>
+              )}
+              <Link
+                href="/auth/profile"
+                className="px-2 py-2 rounded-md hover:bg-primary-foreground/10 transition-colors duration-200"
+                onClick={() => setIsOpen(false)}
+              >
+                Profile
+              </Link>
+            </>
+          )}
           <div className="px-2 py-2">
             {isLoggedIn ? (
               <LogoutButton />

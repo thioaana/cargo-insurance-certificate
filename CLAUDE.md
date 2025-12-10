@@ -19,7 +19,7 @@ A web application for managing cargo insurance certificates. Brokers create cert
 - **Notifications:** react-hot-toast
 - **Testing:** Vitest + React Testing Library
 - **PDF:** Server-side generation (library TBD)
-- **Currency API:** Bank API for exchange rates (TBD)
+- **Currency API:** Frankfurter API (https://frankfurter.dev) for exchange rates
 
 ## Database Schema
 
@@ -104,9 +104,9 @@ A web application for managing cargo insurance certificates. Brokers create cert
 - Optionally, include notes on limitations or next steps for the module.
 
 ### Current Work
-- **Module:** Contracts CRUD (Module 4 completed)
-- **Branch:** `feature/navbar`
-- **Status:** Ready to merge, then start Module 5
+- **Module:** Certificates CRUD (Module 5 completed)
+- **Branch:** `main`
+- **Status:** Ready to start Module 6 (PDF Generation)
 
 ## Module Roadmap
 
@@ -136,7 +136,7 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Updated mobile menu with role-based links
    - Files: `components/NavBar.tsx`, `components/NavBarClient.tsx`, `__tests__/components/NavBarClient.test.tsx`
 
-4. [x] **Contracts CRUD** (`feature/navbar`) - COMPLETE
+4. [x] **Contracts CRUD** (`feature/navbar`) - MERGED
    - Admin-only access (middleware + page-level checks)
    - List all contracts with table view
    - Create contract with broker dropdown selection
@@ -144,15 +144,16 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Delete contract with confirmation
    - Files: `lib/types/contract.ts`, `lib/services/contracts.ts`, `app/contracts/*`, `__tests__/app/contracts/*`, `__tests__/lib/services/contracts.test.ts`
 
-### Upcoming Modules
-
-5. [ ] **Certificates CRUD** (`feature/certificates`)
-   - Broker: create/edit/delete own certificates
-   - Broker: select from contracts matching their broker_code
-   - Admin: full CRUD on all certificates
+5. [x] **Certificates CRUD** (`main`) - COMPLETE
+   - Role-based access: Admin sees all, Broker sees own
+   - Create certificate with contract selection (filtered by broker_code for brokers)
    - Auto-generate certificate_number (CERT-YYYY-NNNN)
-   - Currency conversion via Bank API (blocks if API unavailable)
-   - Files: `app/certificates/*`
+   - Currency conversion via Frankfurter API (blocks if API unavailable)
+   - Business rules: loading date within contract period, value within limit
+   - Edit and delete with access control
+   - Files: `lib/types/certificate.ts`, `lib/services/certificates.ts`, `lib/services/currency.ts`, `app/certificates/*`, `__tests__/lib/services/certificates.test.ts`, `__tests__/lib/services/currency.test.ts`, `__tests__/app/certificates/page.test.tsx`
+
+### Upcoming Modules
 
 6. [ ] **PDF Generation** (`feature/pdf`)
    - Server-side PDF generation
@@ -224,5 +225,5 @@ __tests__/            # Mirror app structure
 
 ## Pending Decisions
 
-- [ ] Bank API for currency exchange rates (user will provide)
+- [x] ~~Bank API for currency exchange rates~~ → Frankfurter API (https://frankfurter.dev)
 - [ ] PDF library selection (react-pdf, puppeteer, or other)

@@ -223,7 +223,42 @@ __tests__/            # Mirror app structure
 5. **Write tests** for new functionality
 6. **Do not over-engineer** - implement only what's specified
 
+## Security
+
+### Row Level Security (RLS)
+RLS policies are defined in `supabase/migrations/20251214_enable_rls.sql`. Run this migration in the Supabase SQL Editor to enable database-level access control.
+
+### Rate Limiting (Production)
+For production deployment, implement rate limiting using Upstash Redis:
+
+```bash
+npm install @upstash/ratelimit @upstash/redis
+```
+
+Example implementation for Server Actions:
+```typescript
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, "1 m"), // 10 requests per minute
+});
+
+// In your action:
+const ip = headers().get("x-forwarded-for") ?? "127.0.0.1";
+const { success } = await ratelimit.limit(ip);
+if (!success) {
+  return { success: false, error: "Too many requests" };
+}
+```
+
+Environment variables needed:
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
 ## Pending Decisions
 
 - [x] ~~Bank API for currency exchange rates~~ → Frankfurter API (https://frankfurter.dev)
 - [ ] PDF library selection (react-pdf, puppeteer, or other)
+- [x] ~~Rate limiting implementation~~ → Documented (Upstash Redis recommended for production)

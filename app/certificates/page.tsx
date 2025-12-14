@@ -4,6 +4,7 @@ import { getCurrentProfile } from '@/lib/services/profiles';
 import { getCertificates } from '@/lib/services/certificates';
 import { Button } from '@/components/ui/button';
 import { CertificateDeleteButton } from './certificate-delete-button';
+import { PDFDownloadButton } from '@/components/pdf-download-button';
 
 export default async function CertificatesPage() {
   const currentProfile = await getCurrentProfile();
@@ -75,6 +76,10 @@ export default async function CertificatesPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
+                      <PDFDownloadButton
+                        certificateId={certificate.id}
+                        certificateNumber={certificate.certificate_number}
+                      />
                       <Link
                         href={`/certificates/${certificate.id}`}
                         className="text-sm text-primary hover:underline"

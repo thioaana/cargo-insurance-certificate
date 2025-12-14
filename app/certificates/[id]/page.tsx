@@ -3,6 +3,7 @@ import { getCurrentProfile } from '@/lib/services/profiles';
 import { getCertificate, getAvailableContracts } from '@/lib/services/certificates';
 import { getAvailableCurrencies } from '@/lib/services/currency';
 import { EditCertificateForm } from './edit-certificate-form';
+import { PDFDownloadButton } from '@/components/pdf-download-button';
 
 interface EditCertificatePageProps {
   params: Promise<{ id: string }>;
@@ -58,9 +59,17 @@ export default async function EditCertificatePage({
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">
-        Edit Certificate: {certificate.certificate_number}
-      </h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">
+          Edit Certificate: {certificate.certificate_number}
+        </h1>
+        <PDFDownloadButton
+          certificateId={certificate.id}
+          certificateNumber={certificate.certificate_number}
+          variant="default"
+          size="default"
+        />
+      </div>
       <EditCertificateForm
         certificate={certificate}
         contracts={contracts}

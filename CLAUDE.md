@@ -104,9 +104,9 @@ A web application for managing cargo insurance certificates. Brokers create cert
 - Optionally, include notes on limitations or next steps for the module.
 
 ### Current Work
-- **Module:** Certificates CRUD (Module 5 completed)
-- **Branch:** `main`
-- **Status:** Ready to start Module 6 (PDF Generation)
+- **Module:** PDF Generation (Module 6 completed)
+- **Branch:** `feature/pdf`
+- **Status:** Ready to merge to main
 
 ## Module Roadmap
 
@@ -144,7 +144,7 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Delete contract with confirmation
    - Files: `lib/types/contract.ts`, `lib/services/contracts.ts`, `app/contracts/*`, `__tests__/app/contracts/*`, `__tests__/lib/services/contracts.test.ts`
 
-5. [x] **Certificates CRUD** (`main`) - COMPLETE
+5. [x] **Certificates CRUD** (`main`) - MERGED
    - Role-based access: Admin sees all, Broker sees own
    - Create certificate with contract selection (filtered by broker_code for brokers)
    - Auto-generate certificate_number (CERT-YYYY-NNNN)
@@ -153,13 +153,16 @@ A web application for managing cargo insurance certificates. Brokers create cert
    - Edit and delete with access control
    - Files: `lib/types/certificate.ts`, `lib/services/certificates.ts`, `lib/services/currency.ts`, `app/certificates/*`, `__tests__/lib/services/certificates.test.ts`, `__tests__/lib/services/currency.test.ts`, `__tests__/app/certificates/page.test.tsx`
 
+6. [x] **PDF Generation** (`feature/pdf`) - COMPLETE
+   - Server-side PDF generation using jsPDF
+   - Download certificate as PDF from list and edit pages
+   - Professional PDF template with header, sections, and footer
+   - Authorization check (users can only download PDFs they have access to)
+   - Files: `lib/pdf/certificate-pdf.ts`, `app/api/pdf/[id]/route.ts`, `components/pdf-download-button.tsx`, `__tests__/lib/pdf/certificate-pdf.test.ts`, `__tests__/components/pdf-download-button.test.tsx`
+
 ### Upcoming Modules
 
-6. [ ] **PDF Generation** (`feature/pdf`)
-   - Server-side PDF generation
-   - Download certificate as PDF
-   - PDF template design
-   - Files: `app/api/pdf/*`, `lib/pdf/*`
+(No modules remaining in current roadmap)
 
 ## Coding Conventions
 
@@ -260,5 +263,5 @@ Environment variables needed:
 ## Pending Decisions
 
 - [x] ~~Bank API for currency exchange rates~~ → Frankfurter API (https://frankfurter.dev)
-- [ ] PDF library selection (react-pdf, puppeteer, or other)
+- [x] ~~PDF library selection~~ → jsPDF (lightweight, simple API, works well for structured documents)
 - [x] ~~Rate limiting implementation~~ → Documented (Upstash Redis recommended for production)

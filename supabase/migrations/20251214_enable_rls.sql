@@ -11,31 +11,14 @@ CREATE POLICY "Users can view own profile"
   ON profiles FOR SELECT
   USING (auth.uid() = id);
 
--- Users can update their own profile (only full_name)
+-- Users can update their own profile
 CREATE POLICY "Users can update own profile"
   ON profiles FOR UPDATE
   USING (auth.uid() = id)
   WITH CHECK (auth.uid() = id);
 
--- Admins can view all profiles
-CREATE POLICY "Admins can view all profiles"
-  ON profiles FOR SELECT
-  USING (
-    EXISTS (
-      SELECT 1 FROM profiles
-      WHERE id = auth.uid() AND role = 'admin'
-    )
-  );
-
--- Admins can update all profiles
-CREATE POLICY "Admins can update all profiles"
-  ON profiles FOR UPDATE
-  USING (
-    EXISTS (
-      SELECT 1 FROM profiles
-      WHERE id = auth.uid() AND role = 'admin'
-    )
-  );
+-- NOTE: Admin access to other profiles is handled at application level
+-- in lib/services/profiles.ts using service role or by querying own profile first
 
 -- ============================================
 -- CONTRACTS TABLE

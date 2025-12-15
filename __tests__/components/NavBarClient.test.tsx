@@ -169,7 +169,7 @@ describe("NavBarClient component", () => {
   describe("common elements", () => {
     it("should always show logo linking to home", () => {
       render(<NavBarClient profile={null} />);
-      const logoLink = screen.getByRole("link", { name: /agro/i });
+      const logoLink = screen.getByRole("link", { name: /ogre/i });
       expect(logoLink).toHaveAttribute("href", "/");
     });
 

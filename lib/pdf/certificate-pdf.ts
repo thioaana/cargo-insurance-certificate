@@ -47,8 +47,8 @@ export function generateCertificatePDF(
     return yPos + 8;
   };
 
-  // Header
-  doc.setFillColor(41, 65, 114); // Dark blue
+  // Header - Navy blue matching app theme (#1e3a5f)
+  doc.setFillColor(30, 58, 95);
   doc.rect(0, 0, pageWidth, 40, 'F');
 
   doc.setTextColor(255, 255, 255);

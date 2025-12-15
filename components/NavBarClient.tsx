@@ -1,13 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { User } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -76,9 +74,8 @@ export function NavBarClient({ profile }: NavBarClientProps) {
     <nav className="bg-primary text-primary-foreground px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-bold text-lg flex items-center gap-2">
-          <Image src="/logo.png" alt="Agro Logo" width={32} height={32} />
-          Agro
+        <Link href="/" className="font-bold text-2xl">
+          <span className="text-red-500">OGRE</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -110,7 +107,6 @@ export function NavBarClient({ profile }: NavBarClientProps) {
               )}
             </>
           )}
-          <ThemeToggle />
           {isLoggedIn ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -137,7 +133,6 @@ export function NavBarClient({ profile }: NavBarClientProps) {
 
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
           <button
             ref={menuButtonRef}
             type="button"

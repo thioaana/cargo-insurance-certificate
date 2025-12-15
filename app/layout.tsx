@@ -12,8 +12,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Agro Proposals",
-  description: "Agricultural proposal management system",
+  title: "Cargo Cert",
+  description: "Cargo insurance certificate management",
 };
 
 export default function RootLayout({
